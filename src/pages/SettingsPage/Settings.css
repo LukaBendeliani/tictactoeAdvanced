@@ -1,0 +1,43 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  background-color: #cfd8dc;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  padding: 2em;
+  border-radius: 12px;
+  box-shadow: 6px 24px 53px -16px rgba(0, 0, 0, 0.63);
+}
+.box input[type="number"] {
+  margin: 1vh 0 1vh 0;
+  padding: 4px;
+  border-radius: 8px;
+  width: calc(100% - 10px);
+  height: 40px;
+  border: 1px solid #fefefe;
+  font-size: large;
+  text-align: center;
+}
+
+.box input[type="number"]:focus {
+  outline: none;
+}
+
+.box div {
+  display: flex;
+  flex-direction: row;
+}
+
+.box h1 {
+  margin: auto 1em;
+  color: #fefefe;
+}
