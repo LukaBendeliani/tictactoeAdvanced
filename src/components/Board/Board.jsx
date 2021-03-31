@@ -1,34 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import XSVG from "./assets/X.svg";
+import OSVG from "./assets/O.svg";
+
 import "./Board.css";
+
 const Board = (props) => {
-  const { rows, columns, numbertowin } = props.location.state;
-  const { setWinner, board, setBoard } = props;
-  const [isXTurn, setXTurn] = useState(true);
-
-  useEffect(() => {
-    createBoardArray();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const createBoardArray = () => {
-    let tempBoard = [...board];
-    for (let i = 0; i < rows; i++) {
-      tempBoard.push(Array.from(Array(columns), (_, x) => x * 0));
-    }
-    setBoard(tempBoard);
-  };
+  const {
+    setWinner,
+    board,
+    setBoard,
+    numbertowin,
+    currentTurn,
+    setCurrentTurn,
+    boardDisabled,
+    setBoardDisabled,
+  } = props;
 
   const boardMapper = (row, rowIndex) => {
     return (
       <tr key={rowIndex}>
         {row.map((col, colIndex) => {
+          if (isWinningPosition(colIndex, rowIndex)) {
+            return (
+              <td
+                key={colIndex}
+                style={{ backgroundColor: "green", color: "#fff" }}
+              >
+                {Boolean(col) ? (
+                  <img
+                    style={{
+                      width: `calc((100vw / ${row.length * 3}) - 10px)`,
+                      height: `calc((100vw / ${board.length * 3}) - 10px)`,
+                    }}
+                    src={col === "X" ? XSVG : OSVG}
+                    alt={col}
+                  />
+                ) : null}
+              </td>
+            );
+          }
+
           return (
-            <th
+            <td
               key={colIndex}
+              style={{
+                width: `calc(100vw / ${row.length * 3})`,
+                height: `calc(100vw / ${board.length * 3})`,
+              }}
               onClick={() => handleBoxClick(rowIndex, colIndex)}
             >
-              {col !== 0 ? col : null}
-            </th>
+              {Boolean(col) ? (
+                <img
+                  style={{
+                    width: `calc((100vw / ${row.length * 3}) - 10px)`,
+                    height: `calc((100vw / ${board.length * 3}) - 10px)`,
+                  }}
+                  src={col === "X" ? XSVG : OSVG}
+                  alt={col}
+                />
+              ) : null}
+            </td>
           );
         })}
       </tr>
@@ -38,18 +69,14 @@ const Board = (props) => {
   const handleBoxClick = (rowIndex, colIndex) => {
     let tempBoard = [...board];
 
-    if (!Boolean(tempBoard[rowIndex][colIndex])) {
-      tempBoard[rowIndex][colIndex] = isXTurn ? "X" : "O";
-      setXTurn(!isXTurn);
+    if (!Boolean(tempBoard[rowIndex][colIndex]) && !boardDisabled) {
+      tempBoard[rowIndex][colIndex] = currentTurn;
+      setCurrentTurn(currentTurn === "X" ? "O" : "X");
       setBoard(tempBoard);
-    }
-
-    const winner = checkWinner();
-
-    if (winner) {
-      setWinner(winner);
-    } else if (checkForDraw()) {
-      setWinner("Draw");
+      if (checkWinner()?.winner) {
+        setWinner(checkWinner().winner);
+        setBoardDisabled(true);
+      }
     }
   };
 
@@ -65,57 +92,127 @@ const Board = (props) => {
     for (let n, i = 0; i < board.length; i++) {
       for (n = 0; n < board[i].length - numbertowin + 1; n++) {
         let section = board[i].slice(n, numbertowin + n);
-        if (allEqual(section)) return board[i][n];
+        if (allEqual(section)) {
+          let winningPositions = {
+            col: [],
+            row: [],
+          };
+
+          for (let col = 0; col < numbertowin; col++) {
+            winningPositions.col.push(col + n);
+            winningPositions.row.push(i);
+          }
+
+          return { winner: section[0], winningPositions };
+        }
       }
     }
+    return false;
   };
 
   const checkColumnsForWinner = () => {
     for (let n, i = 0; i < board.length; i++) {
       for (n = 0; n < board.length - numbertowin + 1; n++) {
-        let section = board.slice(n, numbertowin + n).map((j) => j[i]);
-        if (allEqual(section)) return section[0];
+        let checkingRows = board.slice(n, numbertowin + n);
+        let section = checkingRows.map((j) => j[i]);
+
+        if (allEqual(section)) {
+          let winningPositions = {
+            col: [],
+            row: [],
+          };
+
+          for (let row = 0; row < numbertowin; row++) {
+            winningPositions.col.push(i);
+            winningPositions.row.push(row + n);
+          }
+
+          return { winner: section[0], winningPositions };
+        }
       }
     }
+    return false;
   };
 
   const checkDiagonalsForWinner = () => {
     for (let n, i = 0; i < board.length; i++) {
       for (n = 0; n < board.length - numbertowin + 1; n++) {
-        let sectionrtl = board
+        let sectionltr = board
           .slice(n, numbertowin + n)
           .map((j, index) => j[i + index]);
 
-        let sectionltr = board
+        let sectionrtl = board
           .slice(n, numbertowin + n)
           .map((j, index) => j[numbertowin + i - index - 1]);
 
-        if (allEqual(sectionrtl)) return sectionrtl[0];
-        else if (allEqual(sectionltr)) return sectionltr[0];
+        if (allEqual(sectionrtl)) {
+          let winningPositions = {
+            col: [],
+            row: [],
+          };
+
+          for (let x = 0; x < numbertowin; x++) {
+            winningPositions.col.push(numbertowin + i - x - 1);
+            winningPositions.row.push(x + n);
+          }
+
+          return { winner: sectionrtl[0], winningPositions };
+        } else if (allEqual(sectionltr)) {
+          let winningPositions = {
+            col: [],
+            row: [],
+          };
+
+          for (let x = 0; x < numbertowin; x++) {
+            winningPositions.col.push(i + x);
+            winningPositions.row.push(x + n);
+          }
+          return { winner: sectionltr[0], winningPositions };
+        }
       }
     }
+    return false;
   };
 
   const checkForDraw = () => {
     let boardStr = JSON.stringify(board);
-    if (!boardStr.includes(0) && boardStr.includes("X")) {
-      return true;
+    if (!boardStr.includes(0)) {
+      return { winner: "Draw" };
+    } else {
+      return false;
     }
   };
 
   const checkWinner = () => {
-    let winner;
+    let winnerAndPositions;
     if (
       checkRowsForWinner() ||
       checkColumnsForWinner() ||
-      checkDiagonalsForWinner()
+      checkDiagonalsForWinner() ||
+      checkForDraw()
     ) {
-      winner =
+      winnerAndPositions =
         checkRowsForWinner() ||
         checkColumnsForWinner() ||
-        checkDiagonalsForWinner();
+        checkDiagonalsForWinner() ||
+        checkForDraw();
     }
-    return winner;
+    return winnerAndPositions;
+  };
+
+  const isWinningPosition = (colIndex, rowIndex) => {
+    const winningPositions = checkWinner()?.winningPositions;
+
+    for (let i = 0; i < numbertowin; i++) {
+      if (
+        winningPositions &&
+        winningPositions.col[i] === colIndex &&
+        winningPositions.row[i] === rowIndex
+      ) {
+        return true;
+      }
+    }
+    return false;
   };
 
   return (

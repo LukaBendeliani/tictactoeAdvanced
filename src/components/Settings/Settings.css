@@ -1,9 +1,10 @@
-.container {
-  width: 100vw;
-  height: 100vh;
+.settings-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  position: absolute;
+  right: 1vw;
+  top: calc(50px + 2vw);
 }
 
 .box {
@@ -12,7 +13,7 @@
   background-color: #cfd8dc;
   align-items: center;
   justify-content: center;
-  width: 25%;
+  width: 50%;
   padding: 2em;
   border-radius: 12px;
   box-shadow: 6px 24px 53px -16px rgba(0, 0, 0, 0.63);
