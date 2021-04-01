@@ -1,6 +1,6 @@
 const allEqual = (arr) => {
   const equal = arr.every((v) => {
-    if (v !== 0) return v === arr[0];
+    if (v && v !== 0) return v === arr[0];
     return false;
   });
   return equal;
@@ -29,7 +29,7 @@ const checkRowsForWinner = (board, consecutiveSymbols) => {
 };
 
 const checkColumnsForWinner = (board, consecutiveSymbols) => {
-  for (let n, i = 0; i < board.length; i++) {
+  for (let n, i = 0; i < board[0].length; i++) {
     for (n = 0; n < board.length - consecutiveSymbols + 1; n++) {
       let checkingRows = board.slice(n, consecutiveSymbols + n);
       let section = checkingRows.map((j) => j[i]);

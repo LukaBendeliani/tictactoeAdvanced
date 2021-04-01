@@ -43,11 +43,10 @@ const Board = (props) => {
   };
 
   const handleCellClick = (rowIndex, colIndex) => {
-    let tempBoard = [...board];
-
-    if (!Boolean(tempBoard[rowIndex][colIndex]) && !boardDisabled) {
+    if (board[rowIndex][colIndex] === 0 && !boardDisabled) {
+      let tempBoard = [...board];
       tempBoard[rowIndex][colIndex] = currentTurn;
-      setCurrentTurn(currentTurn === "X" ? "O" : "X");
+      setCurrentTurn((prevState) => (prevState === "X" ? "O" : "X"));
       setBoard(tempBoard);
       if (checkWinner(board, consecutiveSymbols)?.winner) {
         setWinner(checkWinner(board, consecutiveSymbols).winner);
