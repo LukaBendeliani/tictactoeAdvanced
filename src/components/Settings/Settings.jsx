@@ -15,7 +15,7 @@ const Settings = (props) => {
       : delete settingsObj[name];
   };
 
-  const handleStart = () => {
+  const handleModifyClick = () => {
     if (Object.values(settingsObj).length < 3) {
       alert("fill all the fields");
       return;
@@ -48,12 +48,12 @@ const Settings = (props) => {
 
         <input
           type="number"
-          name="numbertowin"
+          name="consecutiveSymbols"
           placeholder="Number of winning symbols"
           onChange={handleValueChange}
-          value={settingsObj.numbertowin}
+          value={settingsObj.consecutiveSymbols}
         />
-        <Button backgroundColor="#7cb342" onClick={handleStart}>
+        <Button backgroundColor="#7cb342" onClick={handleModifyClick}>
           MODIFY
         </Button>
       </div>

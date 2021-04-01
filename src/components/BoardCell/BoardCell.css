@@ -1,0 +1,9 @@
+.board-cell {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
