@@ -41,6 +41,10 @@
   font-weight: 900;
   border-radius: 4px;
   width: 44px;
+  border: 2px outset gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .field p {
@@ -58,6 +62,8 @@
   font-weight: 900;
   border-radius: 4px;
   padding: 0 1em;
+  border: 2px outset gray;
+
 }
 
 .overlay {
@@ -81,4 +87,26 @@
   font-family: "Teko", sans-serif;
   color: #b9fff8;
   letter-spacing: 1.1;
+}
+
+@media (max-width: 600px) {
+  .field {
+    gap: 1em;
+    flex-direction: column;
+  }
+
+  .field label {
+    font-size: 1.8em;
+    text-align: center;
+  }
+
+  .field p {
+    font-size: 1.8em;
+  }
+
+  .field button {
+    font-size: 1.2em;
+    width: 36px;
+  }
+
 }
