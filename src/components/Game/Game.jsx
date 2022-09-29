@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Board from "../Board/Board";
-import Settings from "../Settings/Settings";
 import Navbar from "../Navbar/Navbar";
-import createEmptyBoard from "../../utils/createEmptyBoard";
+import { createBoard } from "../../utils";
 import "./Game.css";
 
 const Game = () => {
@@ -10,11 +9,10 @@ const Game = () => {
   const [currentTurn, setCurrentTurn] = useState("X");
   const [boardDisabled, setBoardDisabled] = useState(false);
   const [boardData, setBoardData] = useState();
-  const [isSettingsVisible, showSettings] = useState(false);
-  const [board, setBoard] = useState(createEmptyBoard(3, 3));
+  const [board, setBoard] = useState(createBoard(3, 3));
 
   const resetBoard = (rows, columns) => {
-    setBoard(createEmptyBoard(rows, columns));
+    setBoard(createBoard(rows, columns));
     setBoardDisabled(false);
     setCurrentTurn("X");
     setWinner();
@@ -31,17 +29,9 @@ const Game = () => {
     consecutiveSymbols: boardData?.consecutiveSymbols || 3,
   };
 
-  const settingsProps = {
-    boardData,
-    setBoardData,
-    resetBoard,
-    showSettings,
-  };
-
   const navbarProps = {
-    isSettingsVisible,
-    showSettings,
     resetBoard,
+    setBoardData,
     winner,
     boardData,
   };
@@ -49,7 +39,6 @@ const Game = () => {
   return (
     <div>
       <Navbar {...navbarProps} />
-      {isSettingsVisible ? <Settings {...settingsProps} /> : <></>}
       <Board {...boardProps} />
     </div>
   );

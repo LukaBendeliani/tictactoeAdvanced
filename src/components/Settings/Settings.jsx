@@ -1,63 +1,77 @@
-import React from "react";
-import Button from "../../components/Button/Button";
+import React, { useState } from "react";
 import "./Settings.css";
 
+const Button = (props) => <button {...props} type="button" />;
+
 const Settings = (props) => {
-  const { setBoardData, resetBoard, showSettings } = props;
-  let settingsObj = {};
+  const { setBoardData, resetBoard, setOpen, winner } = props;
+  const [size, setSize] = useState(3);
+  const [symbols, setSymbols] = useState(3);
 
-  const handleValueChange = (e) => {
-    let name = e.target.name,
-      value = e.target.value;
+  const close = () => setOpen(false);
 
-    value !== ""
-      ? (settingsObj[name] = parseInt(value))
-      : delete settingsObj[name];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setBoardData({ consecutiveSymbols: symbols, rows: size, columns: size });
+    resetBoard(size, size);
+    close();
   };
 
-  const handleModifyClick = () => {
-    if (Object.values(settingsObj).length < 3) {
-      alert("fill all the fields");
-      return;
+  const incrementSize = () => {
+    if (size < 100) {
+      setSize((prevState) => prevState + 1);
     }
-    setBoardData(settingsObj);
-    resetBoard(settingsObj.rows, settingsObj.columns);
-    showSettings(false);
   };
+
+  const decrementSize = () => {
+    if (size !== 2) {
+      setSize((prevState) => prevState - 1);
+    }
+  };
+
+  const incrementSymbols = () => {
+    if (size > symbols) {
+      setSymbols((prevState) => prevState + 1);
+    }
+  };
+
+  const decrementSymbols = () => {
+    if (symbols !== 0) {
+      setSymbols((prevState) => prevState - 1);
+    }
+  };
+
+  const isDraw = winner === "Draw"
 
   return (
-    <div className="settings-container">
-      <div className="box">
-        <div>
-          <input
-            type="number"
-            name="rows"
-            placeholder="Rows"
-            onChange={handleValueChange}
-            value={settingsObj.rows}
-          />
-          <h1>X</h1>
-          <input
-            type="number"
-            name="columns"
-            placeholder="Columns"
-            onChange={handleValueChange}
-            value={settingsObj.columns}
-          />
+    <>
+      <div className="overlay" onClick={close} />
+      {winner && <div className="announcement">
+        <h1>{isDraw ? "Game is draw! :|" : `Player ${winner} won the game! :)`}</h1>
+      </div>}
+      <form className="settings-container" onSubmit={handleSubmit}>
+        <div className="field">
+          <label>Size</label>
+          <span>
+            <Button onClick={incrementSize}>+</Button>
+            <p>{size}</p>
+            <Button onClick={decrementSize}>-</Button>
+          </span>
         </div>
 
-        <input
-          type="number"
-          name="consecutiveSymbols"
-          placeholder="Number of winning symbols"
-          onChange={handleValueChange}
-          value={settingsObj.consecutiveSymbols}
-        />
-        <Button backgroundColor="#7cb342" onClick={handleModifyClick}>
-          MODIFY
-        </Button>
-      </div>
-    </div>
+        <div className="field">
+          <label>Winning symbols</label>
+          <span>
+            <Button onClick={incrementSymbols}>+</Button>
+            <p>{symbols}</p>
+            <Button onClick={decrementSymbols}>-</Button>
+          </span>
+        </div>
+        <button type="submit" className="submit-button">
+          START
+        </button>
+      </form>
+    </>
   );
 };
 

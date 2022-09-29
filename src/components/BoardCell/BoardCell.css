@@ -1,9 +1,15 @@
 .board-cell {
-  border: 1px solid #dddddd;
+  border: 2px solid #dddddd;
   text-align: center;
   padding: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s;
+}
+
+.board-cell:nth-child(2n) {
+  border-top: 2px solid #dddddd;
+  border-bottom: 2px solid #dddddd;
 }

@@ -1,44 +1,84 @@
 .settings-container {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  position: absolute;
-  right: 1vw;
-  top: calc(50px + 2vw);
-}
-
-.box {
-  display: flex;
   flex-direction: column;
-  background-color: #cfd8dc;
-  align-items: center;
-  justify-content: center;
-  width: 50%;
+  background-color: #b9fff8;
   padding: 2em;
-  border-radius: 12px;
-  box-shadow: 6px 24px 53px -16px rgba(0, 0, 0, 0.63);
-}
-.box input[type="number"] {
-  margin: 1vh 0 1vh 0;
-  padding: 4px;
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%, -50%);
   border-radius: 8px;
-  width: calc(100% - 10px);
-  height: 40px;
-  border: 1px solid #fefefe;
-  font-size: large;
-  text-align: center;
+  gap: 1em;
+  z-index: 2;
 }
 
-.box input[type="number"]:focus {
-  outline: none;
-}
-
-.box div {
+.field {
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2em;
 }
 
-.box h1 {
-  margin: auto 1em;
-  color: #fefefe;
+.field span {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.field label {
+  color: #143f6b;
+  font-size: 3em;
+  font-family: "Teko", sans-serif;
+}
+
+.field button {
+  background-color: #2e0249;
+  color: #fafafa;
+  font-size: 2em;
+  aspect-ratio: 1/1;
+  font-weight: 900;
+  border-radius: 4px;
+  width: 44px;
+}
+
+.field p {
+  width: 30px;
+  text-align: center;
+  font-family: "Teko", sans-serif;
+  font-size: 2em;
+}
+
+.submit-button {
+  font-family: "Teko", sans-serif;
+  background-color: #2e0249;
+  color: #fafafa;
+  font-size: 2em;
+  font-weight: 900;
+  border-radius: 4px;
+  padding: 0 1em;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.announcement {
+  position: absolute;
+  top: 4em;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.announcement h1 {
+  font-size: 3em;
+  font-family: "Teko", sans-serif;
+  color: #b9fff8;
+  letter-spacing: 1.1;
 }

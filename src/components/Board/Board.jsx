@@ -1,8 +1,6 @@
 import React from "react";
 import BoardCell from "../BoardCell/BoardCell";
 import checkWinner from "../../utils/checkWinner";
-import XSVG from "./assets/X.svg";
-import OSVG from "./assets/O.svg";
 import "./Board.css";
 
 const Board = (props) => {
@@ -17,26 +15,34 @@ const Board = (props) => {
     setBoardDisabled,
   } = props;
 
-  const rowMapper = (row, rowIndex) => (cell, colIndex) => {
+  const rowMapper = (_, rowIndex) => (cell, colIndex) => {
+   const borderTop = colIndex === 0 ? "none" : "2px solid #fff"
+   const borderBottom = board.length - 1 === colIndex ? "none" : "2px solid #fff"
+   const borderLeft = rowIndex === 0 ? "none" : "2px solid #fff"
+   const borderRight = board.length - 1 === rowIndex ? "none" : "2px solid #fff"
+
     const boardCellProps = {
       handleCellClick,
       rowIndex,
       colIndex,
       board,
       consecutiveSymbols,
+      borderTop,
+      borderBottom,
+      borderLeft,
+      borderRight
     };
+
+    const isX = cell === "X";
 
     return (
       <BoardCell key={colIndex} {...boardCellProps}>
         {Boolean(cell) && (
-          <img
-            style={{
-              width: `calc((100vw / ${board[0].length * 3}) - 10px)`,
-              height: `calc((100vw / ${board.length * 3}) - 10px)`,
-            }}
-            src={cell === "X" ? XSVG : OSVG}
-            alt={cell}
-          />
+          <svg viewBox="0 0 20 18">
+            <text x="4" y="15" fill={isX ? "#D61C4E" : "#FEDB39"}>
+              {isX ? "X" : "O"}
+            </text>
+          </svg>
         )}
       </BoardCell>
     );
@@ -60,7 +66,7 @@ const Board = (props) => {
       <div
         className="board-container"
         style={{
-          gridTemplateColumns: "auto ".repeat(board.length),
+          gridTemplateColumns: "auto ".repeat(board.length)
         }}
       >
         {board.map((row, rowIndex) => (

@@ -1,10 +1,4 @@
-const allEqual = (arr) => {
-  const equal = arr.every((v) => {
-    if (v && v !== 0) return v === arr[0];
-    return false;
-  });
-  return equal;
-};
+const allEqual = arr => arr.every(v => v && v !== 0 ? v === arr[0] : false)
 
 const checkRowsForWinner = (board, consecutiveSymbols) => {
   for (let n, i = 0; i < board.length; i++) {

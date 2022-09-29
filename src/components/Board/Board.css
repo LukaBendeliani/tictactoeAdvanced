@@ -9,3 +9,17 @@
   width: auto;
   display: grid;
 }
+
+.borders {
+  border-left: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+
+text {
+  font-family: 'Fredoka One', cursive;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
